@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Keiron Coolen COMP 272 Section 001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -63,13 +63,29 @@ public class ProblemSolutions {
      * returning the 0 if queue is empty else return pq.peek().
      */
 
-  public static int lastBoulder(int[] boulders) {
+     public static int lastBoulder(int[] boulders) {
 
       //
       // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
       //
-      return -1;
-  }
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+      for (int i = 0;i < boulders.length;i++) {
+        pq.add(boulders[i]);
+      }
+
+      while (pq.size() > 1) {
+        int x = pq.poll();
+        int y = pq.poll();
+
+        if (x != y){
+            pq.add(x - y);
+        }
+
+      }
+      return pq.isEmpty() ? 0 : pq.peek();
+    }
+  
 
 
     /**
@@ -94,7 +110,21 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        HashSet<String> hashSet = new HashSet<>();
+        HashSet<String> duplicateHashSet = new HashSet<>();
+        for (String word: input) {
+            if (hashSet.contains(word)) {
+                duplicateHashSet.add(word);
+            } else {
+                hashSet.add(word);
+            }
+        }
+        ArrayList<String> uniqueList = new ArrayList<>();
+        for (String word: duplicateHashSet) {
+            uniqueList.add(word);
+        }
+        Collections.sort(uniqueList);
+        return uniqueList;  
 
     }
 
@@ -134,6 +164,21 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        HashSet<Integer> numberList = new HashSet<>();
+        ArrayList<String> pairs = new ArrayList<>();
+        for (int i = 0;i < input.length;i++) {
+            int complement = k - input[i];
+            if (numberList.contains(complement)) {
+                int minimum = Math.min(input[i],complement);
+                int maximum = Math.max(input[i],complement);
+                String pair = "(" + minimum + ", " + maximum + ")";
+                if (!pairs.contains(pair)) {
+                    pairs.add(pair);
+                }
+            }
+            numberList.add(input[i]);
+        }
+        Collections.sort(pairs);
+        return pairs;  
     }
 }
